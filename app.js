@@ -68,7 +68,10 @@ function login(){
  const u = lu.value.trim();
  const p = lp.value.trim();
 
- const found = users.find(x => x.username === u && x.password === p);
+const found = users.find(
+    x => x.username === u && x.password === btoa(p)
+);
+
 
  if(!found) return alert("Invalid credentials");
 
