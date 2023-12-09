@@ -86,9 +86,16 @@ function logout(){
 
 
 /* INIT */
+function guard(){
+    const current = localStorage.getItem("session");
 
-if(session){
- dashboardUI(session);
-}else{
- loginUI();
+    if(!current){
+        loginUI();
+    } else {
+        dashboardUI(current);
+    }
 }
+
+// Initial load route guard
+guard();
+
