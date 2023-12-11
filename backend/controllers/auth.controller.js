@@ -80,7 +80,6 @@ exports.registerUser = async (req, res) => {
     });
   }
 };
-
 // POST /api/auth/login
 exports.loginUser = async (req, res) => {
   try {
@@ -96,17 +95,19 @@ exports.loginUser = async (req, res) => {
     const normalizedEmail = email.toLowerCase();
     const users = readUsers();
 
-    const match = await bcrypt.compare(password, found.password);
+    // Find user
+    const user = users.find((u) => u.email === normalizedEmail);
 
-if (!match) {
-  return res.status(401).json({
-    success: false,
-    message: "Invalid credentials"
-  });
-}
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
 
-
+    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
       return res.status(401).json({
         success: false,
@@ -114,6 +115,7 @@ if (!match) {
       });
     }
 
+    // Generate token
     const token = generateToken(normalizedEmail);
 
     res.status(200).json({
