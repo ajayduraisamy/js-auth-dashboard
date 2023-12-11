@@ -96,13 +96,15 @@ exports.loginUser = async (req, res) => {
     const normalizedEmail = email.toLowerCase();
     const users = readUsers();
 
-    const user = users.find((u) => u.email === normalizedEmail);
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid email or password",
-      });
-    }
+    const match = await bcrypt.compare(password, found.password);
+
+if (!match) {
+  return res.status(401).json({
+    success: false,
+    message: "Invalid credentials"
+  });
+}
+
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
