@@ -13,3 +13,7 @@ fetch("http://localhost:5000/api/auth/me", {
 .then(data => {
   document.getElementById("user-email").innerText = data.user.email;
 });
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
