@@ -1,14 +1,14 @@
-import { registerUser } from "./api.js";
+import { post } from "./api.js";
 
-const form = document.getElementById("register-form");
-
-form.addEventListener("submit", async (e) => {
+document.getElementById("register-form").addEventListener("submit", async e => {
   e.preventDefault();
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = email.value;
+  const password = password.value;
 
-  const result = await registerUser(email, password);
+  const res = await post("/register", { email, password });
 
-  alert(result.message);
+  alert(res.message);
+
+  if (res.success) window.location.href = "login.html";
 });
