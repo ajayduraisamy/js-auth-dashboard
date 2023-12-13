@@ -1,6 +1,15 @@
-const token = localStorage.getItem("token");
-console.log("Session token:", localStorage.getItem("token"));
+import { post } from "./api.js";
 
-if (!token) {
-  window.location.href = "login.html";
-}
+const token = localStorage.getItem("token");
+
+if (!token) window.location.href = "login.html";
+
+fetch("http://localhost:5000/api/auth/me", {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+})
+.then(res => res.json())
+.then(data => {
+  document.getElementById("user-email").innerText = data.user.email;
+});
