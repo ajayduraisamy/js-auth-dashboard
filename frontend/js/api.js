@@ -1,9 +1,12 @@
-export async function request(endpoint, data) {
-  const res = await fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
+const API = "http://localhost:5000/api/auth";
 
-  return res.json();
+export async function post(endpoint, data, token) {
+  return fetch(`${API}${endpoint}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : ""
+    },
+    body: JSON.stringify(data)
+  }).then(res => res.json());
 }
