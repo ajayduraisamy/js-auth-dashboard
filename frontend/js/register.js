@@ -1,14 +1,32 @@
 import { post } from "./api.js";
 
-document.getElementById("register-form").addEventListener("submit", async e => {
+document.getElementById("register-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const email = email.value;
-  const password = password.value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-  const res = await post("/register", { email, password });
+  // ✅ Basic validation
+  if (!email || !password) {
+    alert("Please fill all fields");
+    return;
+  }
 
-  alert(res.message);
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters");
+    return;
+  }
 
-  if (res.success) window.location.href = "login.html";
+  try {
+    const res = await post("/register", { email, password });
+
+    alert(res.message || "Registration failed");
+
+    if (res.success) {
+      window.location.href = "login.html";
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Network error, please try again");
+  }
 });

@@ -1,15 +1,34 @@
 import { post } from "./api.js";
 
-document.getElementById("login-form").addEventListener("submit", async e => {
+document.getElementById("login-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const email = email.value;
-  const password = password.value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-  const res = await post("/login", { email, password });
+  // ✅ Basic validation
+  if (!email || !password) {
+    alert("Please fill all fields");
+    return;
+  }
 
-  if (!res.success) return alert(res.message);
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters");
+    return;
+  }
 
-  localStorage.setItem("token", res.token);
-  window.location.href = "dashboard.html";
+  try {
+    const res = await post("/login", { email, password });
+
+    if (!res.success) {
+      alert(res.message || "Login failed");
+      return;
+    }
+
+    localStorage.setItem("token", res.token);
+    window.location.href = "dashboard.html";
+  } catch (err) {
+    console.error(err);
+    alert("Network error, please try again");
+  }
 });
