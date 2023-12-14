@@ -19,4 +19,7 @@ function logout() {
 }
 const email = document.getElementById("user-email");
 email.innerText = "Loading user...";
+const loginTime = document.createElement("p");
+loginTime.innerText = "Logged in at: " + new Date().toLocaleTimeString();
+document.body.appendChild(loginTime);
 
