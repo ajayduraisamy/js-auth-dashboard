@@ -17,3 +17,6 @@ function logout() {
   localStorage.clear();
   window.location.href = "login.html";
 }
+const email = document.getElementById("user-email");
+email.innerText = "Loading user...";
+
