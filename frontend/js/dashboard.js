@@ -28,3 +28,8 @@ if (!localStorage.getItem("token")) {
   window.location.href = "login.html";
 }
 
+window.addEventListener("storage", () => {
+  if (!localStorage.getItem("token")) {
+    window.location.href = "login.html";
+  }
+});
