@@ -32,3 +32,4 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     alert("Network error, please try again");
   }
 });
+e.target.querySelector("button").disabled = true;
