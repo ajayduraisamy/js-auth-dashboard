@@ -23,3 +23,8 @@ const loginTime = document.createElement("p");
 loginTime.innerText = "Logged in at: " + new Date().toLocaleTimeString();
 document.body.appendChild(loginTime);
 
+if (!localStorage.getItem("token")) {
+  alert("Session expired");
+  window.location.href = "login.html";
+}
+
