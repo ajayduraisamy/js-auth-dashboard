@@ -124,6 +124,8 @@ exports.loginUser = async (req, res) => {
       token,
       email: normalizedEmail,
     });
+      console.log("Login attempt:", normalizedEmail);
+
   } catch (err) {
     console.error("Login error:", err.message);
     res.status(500).json({
