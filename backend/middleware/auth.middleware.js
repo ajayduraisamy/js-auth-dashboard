@@ -18,7 +18,9 @@ exports.protect = (req, res, next) => {
     : header;
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+      const decoded = jwt.verify(token, JWT_SECRET);
+      console.log("Validating JWT token");
+
     req.user = { email: decoded.email };
     next();
   } catch (err) {
