@@ -33,3 +33,4 @@ window.addEventListener("storage", () => {
     window.location.href = "login.html";
   }
 });
+document.getElementById("user-email").innerText = "Welcome ✔";
