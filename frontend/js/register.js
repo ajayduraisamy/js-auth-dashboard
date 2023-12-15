@@ -11,6 +11,7 @@ document.getElementById("register-form").addEventListener("submit", async (e) =>
     alert("Please fill all fields");
     return;
   }
+console.log("Login success for:", email);
 
   if (password.length < 6) {
     alert("Password must be at least 6 characters");
