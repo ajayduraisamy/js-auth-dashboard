@@ -10,6 +10,8 @@ export async function post(endpoint, data, token) {
     body: JSON.stringify(data)
   }).then(res => res.json());
 }
+console.log("API call:", endpoint, data);
+
 export async function post(endpoint, data, token) {
   try {
     const res = await fetch(`${API}${endpoint}`, {
