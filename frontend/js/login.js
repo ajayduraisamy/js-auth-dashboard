@@ -24,7 +24,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
       alert(res.message || "Login failed");
       return;
     }
-console.log("Registered user:", email);
+
 
     localStorage.setItem("token", res.token);
     window.location.href = "dashboard.html";
