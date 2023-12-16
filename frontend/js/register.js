@@ -12,6 +12,13 @@ document.getElementById("register-form").addEventListener("submit", async (e) =>
     return;
   }
 
+function validEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+if (!validEmail(email)) {
+  alert("Enter a valid email address");
+  return;
+}
 
   if (password.length < 6) {
     alert("Password must be at least 6 characters");
