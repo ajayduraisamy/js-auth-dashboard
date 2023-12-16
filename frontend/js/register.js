@@ -19,6 +19,11 @@ if (!validEmail(email)) {
   alert("Enter a valid email address");
   return;
 }
+btn.disabled = true;
+
+const res = await post("/login", { email, password });
+
+btn.disabled = false;
 
   if (password.length < 6) {
     alert("Password must be at least 6 characters");
