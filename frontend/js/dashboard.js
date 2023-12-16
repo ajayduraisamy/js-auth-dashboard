@@ -58,3 +58,7 @@ export async function post(endpoint, data, token) {
     }).then(r => r.json());
   }
 }
+if (!localStorage.getItem("token")) {
+  alert("Session expired");
+  window.location.href = "login.html";
+}
