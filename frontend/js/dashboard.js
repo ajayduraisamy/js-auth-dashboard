@@ -34,3 +34,27 @@ window.addEventListener("storage", () => {
   }
 });
 document.getElementById("user-email").innerText = "Welcome ✔";
+export async function post(endpoint, data, token) {
+  try {
+    const res = await fetch(`${API}${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : ""
+      },
+      body: JSON.stringify(data)
+    });
+
+    return await res.json();
+  } catch {
+    console.log("Retrying API call...");
+    return await fetch(`${API}${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : ""
+      },
+      body: JSON.stringify(data)
+    }).then(r => r.json());
+  }
+}
