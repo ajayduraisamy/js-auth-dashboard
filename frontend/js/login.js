@@ -18,6 +18,15 @@ if (!validEmail(email)) {
   alert("Enter a valid email address");
   return;
 }
+    const history = JSON.parse(localStorage.getItem("loginHistory") || "[]");
+
+history.push({
+  email,
+  time: new Date().toISOString()
+});
+
+localStorage.setItem("loginHistory", JSON.stringify(history));
+
 
   if (password.length < 6) {
     alert("Password must be at least 6 characters");
