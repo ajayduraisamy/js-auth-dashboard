@@ -62,3 +62,25 @@ if (!localStorage.getItem("token")) {
   alert("Session expired");
   window.location.href = "login.html";
 }
+async function loadProfile() {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch("http://localhost:5000/api/auth/me", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      document.getElementById("user-email").innerText = data.user.email;
+    } else {
+      alert("Session invalid");
+      window.location.href = "login.html";
+    }
+  } catch (e) {
+    alert("Failed to load profile");
+  }
+}
+
+loadProfile();
