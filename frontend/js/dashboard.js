@@ -92,3 +92,7 @@ if (history.length) {
   p.innerText = "Last login: " + new Date(last.time).toLocaleString();
   document.body.appendChild(p);
 }
+if (!localStorage.getItem("token")) {
+  document.getElementById("session-badge").className = "badge bg-danger";
+  document.getElementById("session-badge").innerText = "Session Expired";
+}
