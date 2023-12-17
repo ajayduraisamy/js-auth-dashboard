@@ -84,3 +84,11 @@ async function loadProfile() {
 }
 
 loadProfile();
+const history = JSON.parse(localStorage.getItem("loginHistory") || "[]");
+
+if (history.length) {
+  const last = history[history.length - 1];
+  const p = document.createElement("p");
+  p.innerText = "Last login: " + new Date(last.time).toLocaleString();
+  document.body.appendChild(p);
+}
