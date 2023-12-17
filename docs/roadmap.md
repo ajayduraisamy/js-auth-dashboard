@@ -14,4 +14,10 @@
 ✅ UX polishing  
 ✅ Logging instrumentation  
 ✅ Stability testing
+## Dec 17 Enhancements
+
+✅ Profile fetch feature  
+✅ Dashboard refresh  
+✅ Login history tracking  
+✅ Session UX improvements
 
