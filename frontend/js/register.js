@@ -22,6 +22,7 @@ if (!validEmail(email)) {
 btn.disabled = true;
 
 const res = await post("/login", { email, password });
+document.getElementById("reg-spinner").classList.remove("d-none");
 
 btn.disabled = false;
 
