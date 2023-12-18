@@ -56,3 +56,5 @@ document.addEventListener("keydown", e => {
     document.querySelector("form").requestSubmit();
   }
 });
+
+document.getElementById("login-form").reset();

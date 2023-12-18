@@ -29,7 +29,7 @@ btn.disabled = false;document.addEventListener("keydown", e => {
     document.querySelector("form").requestSubmit();
   }
 });
-
+document.getElementById("register-form").reset();
 
   if (password.length < 6) {
     alert("Password must be at least 6 characters");
