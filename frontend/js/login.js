@@ -24,6 +24,7 @@ history.push({
   email,
   time: new Date().toISOString()
 });
+document.getElementById("login-spinner").classList.add("d-none");
 
 localStorage.setItem("loginHistory", JSON.stringify(history));
 
