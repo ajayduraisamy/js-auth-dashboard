@@ -6,3 +6,4 @@ export async function get(url, token) {
   });
   return await res.json();
 }
+document.body.classList.remove("opacity-50");
