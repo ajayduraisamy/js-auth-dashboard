@@ -24,7 +24,12 @@ btn.disabled = true;
 const res = await post("/login", { email, password });
 document.getElementById("reg-spinner").classList.remove("d-none");
 
-btn.disabled = false;
+btn.disabled = false;document.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    document.querySelector("form").requestSubmit();
+  }
+});
+
 
   if (password.length < 6) {
     alert("Password must be at least 6 characters");

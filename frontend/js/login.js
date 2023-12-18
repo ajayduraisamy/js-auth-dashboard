@@ -51,3 +51,8 @@ localStorage.setItem("loginHistory", JSON.stringify(history));
   }
 });
 e.target.querySelector("button").disabled = true;
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    document.querySelector("form").requestSubmit();
+  }
+});
