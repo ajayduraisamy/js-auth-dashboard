@@ -20,4 +20,10 @@
 ✅ Dashboard refresh  
 ✅ Login history tracking  
 ✅ Session UX improvements
+## Dec 18 UX polish
+
+✅ Loading spinners  
+✅ Inline error messages  
+✅ Keyboard support  
+✅ Dashboard loading states
 
