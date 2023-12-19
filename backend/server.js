@@ -34,3 +34,10 @@ app.use((err, req, res, next) => {
     message: "Internal server error"
   });
 });
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    console.log(`${req.method} ${req.url} - ${Date.now() - start}ms`);
+  });
+  next();
+});
