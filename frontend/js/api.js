@@ -18,6 +18,16 @@ function normalize(res) {
   }
   return res;
 }
+function writeUsers(users) {
+  try {
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), {
+      encoding: "utf-8",
+      flag: "w"
+    });
+  } catch (err) {
+    console.error("Write failed:", err.message);
+  }
+}
 
 export async function post(endpoint, data, token) {
   try {
