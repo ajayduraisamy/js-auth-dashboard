@@ -27,3 +27,10 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+app.use((err, req, res, next) => {
+  console.error("Unhandled:", err.message);
+  res.status(500).json({
+    success: false,
+    message: "Internal server error"
+  });
+});
