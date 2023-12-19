@@ -20,6 +20,15 @@ exports.protect = (req, res, next) => {
   try {
       const decoded = jwt.verify(token, JWT_SECRET);
       console.log("Validating JWT token");
+try {
+  const decoded = jwt.verify(token, JWT_SECRET);
+  req.user = decoded;
+} catch {
+  return res.status(401).json({
+    success: false,
+    message: "Expired or invalid token"
+  });
+}
 
     req.user = { email: decoded.email };
     next();
