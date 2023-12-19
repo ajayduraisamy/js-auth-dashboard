@@ -11,6 +11,7 @@ export async function post(endpoint, data, token) {
   }).then(res => res.json());
 }
 console.log("API call:", endpoint, data);
+export const API_BASE = "http://localhost:5000/api/auth";
 
 export async function post(endpoint, data, token) {
   try {
