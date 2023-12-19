@@ -29,6 +29,9 @@ try {
     message: "Expired or invalid token"
   });
 }
+function hasEmptyFields(email, password) {
+  return !email || !password;
+}
 
     req.user = { email: decoded.email };
     next();
