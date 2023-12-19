@@ -12,6 +12,12 @@ export async function post(endpoint, data, token) {
 }
 console.log("API call:", endpoint, data);
 export const API_BASE = "http://localhost:5000/api/auth";
+function normalize(res) {
+  if (!res.success) {
+    throw new Error(res.message || "Request failed");
+  }
+  return res;
+}
 
 export async function post(endpoint, data, token) {
   try {
