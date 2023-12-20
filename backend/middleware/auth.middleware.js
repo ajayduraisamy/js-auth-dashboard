@@ -4,41 +4,25 @@ require("dotenv").config();
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
 exports.protect = (req, res, next) => {
-  const header = req.headers.authorization;
+  const authHeader = req.headers["authorization"];
 
-  if (!header) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       success: false,
-      message: "No auth token provided",
+      message: "Authorization token missing",
     });
   }
 
-  const token = header.startsWith("Bearer ")
-    ? header.split(" ")[1]
-    : header;
+  const token = authHeader.split(" ")[1];
 
   try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      console.log("Validating JWT token");
-try {
-  const decoded = jwt.verify(token, JWT_SECRET);
-  req.user = decoded;
-} catch {
-  return res.status(401).json({
-    success: false,
-    message: "Expired or invalid token"
-  });
-}
-function hasEmptyFields(email, password) {
-  return !email || !password;
-}
-
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.user = { email: decoded.email };
     next();
   } catch (err) {
     return res.status(401).json({
       success: false,
-      message: "Token invalid or expired",
+      message: "Invalid or expired token",
     });
   }
 };

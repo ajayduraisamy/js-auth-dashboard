@@ -1,51 +1,29 @@
 import { post } from "./api.js";
 
-document.getElementById("register-form").addEventListener("submit", async (e) => {
+document.getElementById("register-form").addEventListener("submit", async e => {
   e.preventDefault();
 
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
+  const errBox = document.getElementById("reg-error");
 
-  // ✅ Basic validation
+  errBox.innerText = "";
+
   if (!email || !password) {
-    alert("Please fill all fields");
-    return;
-  }
-
-function validEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-if (!validEmail(email)) {
-  alert("Enter a valid email address");
-  return;
-}
-btn.disabled = true;
-
-const res = await post("/login", { email, password });
-document.getElementById("reg-spinner").classList.remove("d-none");
-
-btn.disabled = false;document.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    document.querySelector("form").requestSubmit();
-  }
-});
-document.getElementById("register-form").reset();
-
-  if (password.length < 6) {
-    alert("Password must be at least 6 characters");
+    errBox.innerText = "All fields required";
     return;
   }
 
   try {
     const res = await post("/register", { email, password });
 
-    alert(res.message || "Registration failed");
-
-    if (res.success) {
-      window.location.href = "login.html";
+    if (!res.success) {
+      errBox.innerText = res.message;
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    alert("Network error, please try again");
+
+    window.location.href = "login.html";
+  } catch {
+    errBox.innerText = "Network error";
   }
 });

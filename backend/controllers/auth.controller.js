@@ -1,5 +1,3 @@
-// backend/controllers/auth.controller.js
-
 const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcrypt");
@@ -11,27 +9,23 @@ const JWT_EXPIRES_IN = "1h";
 
 function readUsers() {
   try {
-    const data = fs.readFileSync(USERS_FILE, "utf-8");
-    return JSON.parse(data || "[]");
-  } catch (err) {
-    console.error("Error reading users file:", err.message);
+    return JSON.parse(fs.readFileSync(USERS_FILE, "utf-8") || "[]");
+  } catch {
     return [];
   }
 }
 
 function writeUsers(users) {
-  try {
-    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
-  } catch (err) {
-    console.error("Error writing users file:", err.message);
-  }
+  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), "utf-8");
 }
 
 function generateToken(email) {
-  return jwt.sign({ email }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  return jwt.sign({ email }, JWT_SECRET, {
+    expiresIn: JWT_EXPIRES_IN,
+  });
 }
 
-// POST /api/auth/register
+//  REGISTER
 exports.registerUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -39,64 +33,52 @@ exports.registerUser = async (req, res) => {
     if (!email || !password || password.length < 6) {
       return res.status(400).json({
         success: false,
-        message: "Email and password (min 6 chars) are required",
+        message: "Email and password (min 6 chars) required",
       });
     }
 
-    const normalizedEmail = email.toLowerCase();
     const users = readUsers();
+    const check = users.find((u) => u.email === email.toLowerCase());
 
-    const existing = users.find((u) => u.email === normalizedEmail);
-    if (existing) {
+    if (check) {
       return res.status(409).json({
         success: false,
         message: "User already exists",
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashed = await bcrypt.hash(password, 10);
 
-    const newUser = {
-      email: normalizedEmail,
-      password: hashedPassword,
+    users.push({
+      email: email.toLowerCase(),
+      password: hashed,
       createdAt: new Date().toISOString(),
-    };
+    });
 
-    users.push(newUser);
     writeUsers(users);
 
-    const token = generateToken(normalizedEmail);
+    const token = generateToken(email);
 
     res.status(201).json({
       success: true,
-      message: "User registered successfully",
+      message: "Registration successful",
       token,
     });
-  } catch (err) {
-    console.error("Register error:", err.message);
+  } catch {
     res.status(500).json({
       success: false,
-      message: "Server error during registration",
+      message: "Registration failed",
     });
   }
 };
-// POST /api/auth/login
+
+//  LOGIN
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Email and password are required",
-      });
-    }
-
-    const normalizedEmail = email.toLowerCase();
     const users = readUsers();
-
-    // Find user
-    const user = users.find((u) => u.email === normalizedEmail);
+    const user = users.find((u) => u.email === email.toLowerCase());
 
     if (!user) {
       return res.status(401).json({
@@ -105,40 +87,36 @@ exports.loginUser = async (req, res) => {
       });
     }
 
-    // Compare password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const valid = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) {
+    if (!valid) {
       return res.status(401).json({
         success: false,
         message: "Invalid email or password",
       });
     }
 
-    // Generate token
-    const token = generateToken(normalizedEmail);
+    const token = generateToken(email);
 
-    res.status(200).json({
+    res.json({
       success: true,
       message: "Login successful",
       token,
-      email: normalizedEmail,
+      email,
     });
-      console.log("Login attempt:", normalizedEmail);
-
-  } catch (err) {
-    console.error("Login error:", err.message);
+  } catch {
     res.status(500).json({
       success: false,
-      message: "Server error during login",
+      message: "Login failed",
     });
   }
 };
 
-// GET /api/auth/me
+//  PROFILE
 exports.getProfile = (req, res) => {
   try {
     const users = readUsers();
+
     const user = users.find((u) => u.email === req.user.email);
 
     if (!user) {
@@ -150,15 +128,14 @@ exports.getProfile = (req, res) => {
 
     const { password, ...safeUser } = user;
 
-    res.status(200).json({
+    res.json({
       success: true,
       user: safeUser,
     });
-  } catch (err) {
-    console.error("Profile error:", err.message);
+  } catch {
     res.status(500).json({
       success: false,
-      message: "Server error while fetching profile",
+      message: "Failed to load profile",
     });
   }
 };

@@ -1,9 +1,32 @@
-export async function get(url, token) {
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-  return await res.json();
+import { get } from "./api.js";
+
+const token = localStorage.getItem("token");
+
+if (!token) {
+  window.location.href = "login.html";
 }
-document.body.classList.remove("opacity-50");
+
+async function loadProfile() {
+  const info = document.getElementById("user-email");
+
+  try {
+    const data = await get("/me", token);
+
+    if (!data.success) {
+      localStorage.clear();
+      window.location.href = "login.html";
+      return;
+    }
+
+    info.innerText = data.user.email;
+  } catch {
+    info.innerText = "Profile load failed";
+  }
+}
+
+window.logout = () => {
+  localStorage.clear();
+  window.location.href = "login.html";
+};
+
+loadProfile();
